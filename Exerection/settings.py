@@ -133,3 +133,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 cred =credentials.Certificate('Db\exertion-475b3-firebase-adminsdk-l2sbg-ebf290c134.json')
 app=firebase_admin.initialize_app(cred)
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USER_TLS = True
+EMAIL_HOST_USER = 'exertion171@gmail.com'
+EMAIL_HOST_PASSWORD = 'uvtllvoxiovyxxmn'

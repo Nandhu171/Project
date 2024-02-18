@@ -59,7 +59,7 @@ def Place(request):
         db.collection("tbl_place").add(data)
         return redirect("webadmin:Place")
     else:
-    return render(request,"Admin/Place.html")    
+        return render(request,"Admin/Place.html")    
 
 
 def vacancy(request):

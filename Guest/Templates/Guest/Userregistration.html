@@ -21,7 +21,21 @@
             <td>Email</td>
             <td><input type="text" name="uemail" id=""></td>
         </tr>
-        
+        <tr>
+            <td>District</td>
+            <td><select name="sel_district" id="sel_district">
+                <option value="">...Select...</option>
+                {% for i in district %}
+                <option value="{{i.id}}">{{i.dis.district_name}}</option>
+            {% endfor %}
+        </select></td>
+        </tr>
+        <tr>
+            <td>Place</td>
+            <td><select name="sel_place" id="sel_place">
+                <option value="">..Select..</option>
+        </select></td>
+        </tr>
         <tr>
             <td>Address</td>
             <td><textarea name="address" id="" cols="30" rows="10"></textarea></td>
@@ -38,10 +52,33 @@
             <td><input type="password" name="password" id=""></td>
         </tr>
         <tr>
+            <td>Photo</td>
+            <td><input type="file" name="photo" id=""></td>
+        </tr>
+        <tr>
             <td colspan="2" align="center"><input type="submit" value="Register"></td>
 
         </tr>
     </table>
-   </form>
+</form>
+{% if msg %}
+<script>
+    alert("{{msg}}")
+</script>
+{% endif %}
 </body>
 </html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'webguest:ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#sel_place").html(data);
+            },
+        });
+    });
+</script>
