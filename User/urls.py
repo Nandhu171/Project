@@ -7,4 +7,5 @@ urlpatterns = [
      path("Myprofile/",views.Myprofile,name="Myprofile"),
     path("Editprofile/",views.Editprofile,name="Editprofile"),
     path("changepassword/",views.changepassword,name="changepassword"),
+    path('viewvacancy/',views.viewvacancy,name="viewvacancy"),
 ]

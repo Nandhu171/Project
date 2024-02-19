@@ -55,3 +55,7 @@ def changepassword(request):
     [email],
   )
   return render(request,"User/Homepage.html",{"msg":email})    
+
+
+def viewvacancy(request):
+  return render(request,"User/ViewVacancy.html")
