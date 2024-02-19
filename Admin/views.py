@@ -68,7 +68,15 @@ def vacancy(request):
         db.collection("tbl_vacancy").add(data)
     return render(request,"Admin/vacancy.html")
     
-          
-
 def Employe(request):
-    return render(request,"Admin/Employe.html")            
+    if request.method =="POST":
+      email = request.POST.get("email")
+      password = request.POST.get("Password")
+      try:
+        Employe = firebase_admin.auth.create_user(email=email,password=password)
+      except (firebase_admin._auth_utils.EmailAlreadyExistsError,ValueError) as error:
+        return render(request,"Admin/Employe.html",{"msg":error})
+      db.collection("tbl_Employereg").add({"Employe_id":Employe.uid,"Employe_name":request.POST.get("name"),"Employe_contact":request.POST.get("contact"),"user_email":request.POST.get("email"),"user_address":request.POST.get("Address"),"user_gender":request.POST.get("Gender")})
+      return render(request,"Admin/Employe.html")
+    else:
+      return render(request,"Admin/Employe.html")          

@@ -8,14 +8,14 @@ import pyrebase
 db=firestore.client()
 
 config = {
-  "apiKey": "AIzaSyDTaWnECREmBwzzN0byWQRD6-Ptsh7xLCg",
-  "authDomain": "exertion-475b3.firebaseapp.com",
-  "projectId": "exertion-475b3",
-  "storageBucket": "exertion-475b3.appspot.com",
-  "messagingSenderId": "404919533194",
-  "appId": "1:404919533194:web:d2b9d03a4bc97982d27773",
-  "measurementId": "G-0D08LTEK18",
-  "databaseURL":"",
+  "apiKey": "AIzaSyAypXmHlJ5uXI6N3z9hICj3-mAGy9em3T8",
+  "authDomain": "exertion-b2ee3.firebaseapp.com",
+  "projectId": "exertion-b2ee3",
+  "storageBucket": "exertion-b2ee3.appspot.com",
+  "messagingSenderId": "1074924172707",
+  "appId": "1:1074924172707:web:62328a7a069ca273fd5616",
+  "measurementId": "G-YMBJCPKLRV",
+  "databaseURL" : ""
 }
 
 firebase = pyrebase.initialize_app(config)
@@ -32,6 +32,7 @@ def Userregistraction(request):
       email = request.POST.get("uemail")
       password = request.POST.get("password")
       try:
+        
         user = firebase_admin.auth.create_user(email=email,password=password)
       except (firebase_admin._auth_utils.EmailAlreadyExistsError,ValueError) as error:
         return render(request,"Guest/Userregistration.html",{"msg":error})
@@ -46,6 +47,7 @@ def Userregistraction(request):
       return render(request,"Guest/Userregistration.html",{"district":dis_data})
 
 def Login(request):
+  Employeid=""
   userid=""
   if request.method == "POST":
     email = request.POST.get("email")
@@ -56,10 +58,16 @@ def Login(request):
       return render(request,"Guest/Login.html",{"msg":"Error in Email Or Password"})
     user=db.collection("tbl_userreg").where("user_id","==",data["localId"]).stream()    
     for u in user:
-      userid=u.id  
+      userid=u.id 
+    Employee=db.collection("tbl_userreg").where("employee_id","==",data["localId"]).stream()  
+    for e in Employee:
+      Employeid=e.id  
     if userid:
       request.session["uid"]=userid
-      return redirect("webuser:homepage")  
+      return redirect("webuser:homepage")
+    elif Employeid:
+      request.session["eid"]=Employeid
+      return redirect("webemployee:homepage")
     else:
       return render(request,"Guest/Login.html",{"msg":"error"})    
   else:
