@@ -56,10 +56,11 @@ def Login(request):
       data = authe.sign_in_with_email_and_password(email,password)
     except:
       return render(request,"Guest/Login.html",{"msg":"Error in Email Or Password"})
+    print(data["localId"])
     user=db.collection("tbl_userreg").where("user_id","==",data["localId"]).stream()    
     for u in user:
       userid=u.id 
-    Employee=db.collection("tbl_userreg").where("employee_id","==",data["localId"]).stream()  
+    Employee=db.collection("tbl_Employereg").where("Employe_id","==",data["localId"]).stream()  
     for e in Employee:
       Employeid=e.id  
     if userid:
@@ -67,7 +68,7 @@ def Login(request):
       return redirect("webuser:homepage")
     elif Employeid:
       request.session["eid"]=Employeid
-      return redirect("webemployee:homepage")
+      return redirect("webemploye:homepage")
     else:
       return render(request,"Guest/Login.html",{"msg":"error"})    
   else:
