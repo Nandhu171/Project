@@ -63,10 +63,15 @@ def Place(request):
 
 
 def vacancy(request):
+    w=db.collection("tbl_vacancy").stream()
+    w_data=[]
+    for i in w:
+        data=i.to_dict()
+        w_data.append({"w":data,"id":i.id})
     if request.method=="POST":
-        data={"vacancy_postion":request.POST.get("postion"),"vacancy_details":request.POST.get("Details")}
+        data={"CompanyName":request.POST.get("CompanyName"),"vacancy_postion":request.POST.get("postion"),"vacancy_details":request.POST.get("Details")}
         db.collection("tbl_vacancy").add(data)
-    return render(request,"Admin/vacancy.html")
+    return render(request,"Admin/vacancy.html",{"vacancy":w_data})
     
 def Employe(request):
     if request.method =="POST":
@@ -79,4 +84,13 @@ def Employe(request):
       db.collection("tbl_Employereg").add({"Employe_id":Employe.uid,"Employe_name":request.POST.get("name"),"Employe_contact":request.POST.get("contact"),"user_email":request.POST.get("email"),"user_address":request.POST.get("Address"),"user_gender":request.POST.get("Gender")})
       return render(request,"Admin/Employe.html")
     else:
-      return render(request,"Admin/Employe.html")          
+      return render(request,"Admin/Employe.html")       
+
+
+def viewreq(request):
+    req=db.collection("tbl_request").where("request_status","==",0).stream()
+    req_data=[]
+    for i in req:
+        data=i.to_dict()
+        req_data.append({"view":data,"id":i.id})
+    return render(request,"Admin/Viewrequest.html")         

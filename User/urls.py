@@ -8,4 +8,5 @@ urlpatterns = [
     path("Editprofile/",views.Editprofile,name="Editprofile"),
     path("changepassword/",views.changepassword,name="changepassword"),
     path('viewvacancy/',views.viewvacancy,name="viewvacancy"),
+    path('sendreq/<str:id>',views.sendreq,name="sendreq")
 ]

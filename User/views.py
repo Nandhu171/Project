@@ -58,4 +58,22 @@ def changepassword(request):
 
 
 def viewvacancy(request):
-  return render(request,"User/ViewVacancy.html")
+    w=db.collection("tbl_vacancy").stream()
+    w_data=[]
+    for i in w:
+        data=i.to_dict()
+        w_data.append({"w":data,"id":i.id})
+        return render(request,"User/viewvacancy.html",{"vacancy":w_data})
+
+
+
+def sendreq(request,id):
+  if request.method=="POST":
+    Resume = request.FILES.get("Resume")
+    if Resume:
+      path = "UserResume/" + Resume.name
+      st.child(path).put(Resume)
+      u_url = st.child(path).get_url(None)
+    data={"vacancy_id":id,"user_id":request.session["uid"],"request_status":0,"user_resume":u_url} 
+    db.collection("tbl_request").add(data)
+  return render(request,"User/SendRequest.html")   

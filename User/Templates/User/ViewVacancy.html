@@ -7,23 +7,26 @@
 </head>
 <body>
     <form action="" method="post">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>#</td>
-                <td>Company Name</td>
-                <td>Position</td>
-                <td>Details</td>
-                <td>Action</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
+        {% csrf_token  %}
+       
     </form>
+    <table>
+        <tr>
+            <td>#</td>
+            <td>Company Name</td>
+            <td>Position</td>
+            <td>Details</td>
+            <td>Action</td>
+        </tr>
+        {% for i in vacancy %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.w.CompanyName}}</td>
+            <td>{{i.w.vacancy_details}}</td>
+            <td>{{i.w.vacancy_postion}}</td>
+            <td><a href="{% url 'webuser:sendreq' i.id %}">Request</a></td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

@@ -7,5 +7,7 @@ urlpatterns = [
     path('Place/',views.Place,name="Place"),
     path('vacancy/',views.vacancy,name="vacancy"),
     path('Employe/',views.Employe,name="Employe"),
-    path('deldistrict/<str:id>',views.deldistrict,name="deldistrict")
+    path('deldistrict/<str:id>',views.deldistrict,name="deldistrict"),
+    path('viewreq/',views.viewreq,name="viewreq")
+
 ]

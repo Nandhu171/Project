@@ -10,6 +10,10 @@
         {% csrf_token %}
         <table>
             <tr>
+                <td>Company Name</td>
+                <td><input type="text" name="CompanyName" id=""></td>
+            </tr>
+            <tr>
                 <td>Postion</td>
                 <td><input type="text" name="postion" id=""></td>
             </tr>
@@ -26,10 +30,20 @@
     <table>
         <tr>
             <td>#</td>
+            <td>Company Name</td>
             <td>Postion</td>
             <td>Details</td>
             <td>action</td>
         </tr>
+        {% for i in vacancy %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.w.CompanyName}}</td>
+            <td>{{i.w.vacancy_details}}</td>
+            <td>{{i.w.vacancy_postion}}</td>
+            <td></td>
+        </tr>
+        {% endfor %}
     </table>
 </body>
 </html>
