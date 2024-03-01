@@ -8,6 +8,7 @@ urlpatterns = [
     path('vacancy/',views.vacancy,name="vacancy"),
     path('Employe/',views.Employe,name="Employe"),
     path('deldistrict/<str:id>',views.deldistrict,name="deldistrict"),
-    path('viewreq/',views.viewreq,name="viewreq")
-
+    path('viewreq/',views.viewreq,name="viewreq"),
+    path('accept/<str:id>',views.accept,name="accept"),
+    path('reject/<str:id>',views.reject,name="reject"),
 ]

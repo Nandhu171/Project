@@ -2,6 +2,9 @@ from django.shortcuts import render,redirect
 import firebase_admin 
 from firebase_admin import firestore,credentials,storage,auth
 import pyrebase
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
 
 
 
@@ -92,5 +95,31 @@ def viewreq(request):
     req_data=[]
     for i in req:
         data=i.to_dict()
-        req_data.append({"view":data,"id":i.id})
-    return render(request,"Admin/Viewrequest.html")         
+        user=db.collection("tbl_userreg").document(data["user_id"]).get().to_dict()
+        vacancy=db.collection("tbl_vacancy").document(data["vacancy_id"]).get().to_dict()
+        req_data.append({"view":data,"id":i.id,"user":user,"vacancy":vacancy})
+        # print(req_data)
+    return render(request,"Admin/Viewrequest.html",{"view":req_data}) 
+    
+def accept(request,id):
+    request = db.collection("tbl_request").document(id).get().to_dict()
+    user = db.collection("tbl_userreg").document(request["user_id"]).get().to_dict()
+    empid = user["user_id"]
+    email = user["user_email"]
+    send_mail(
+        'Welcome To Our Company', 
+        "\rHello \r\n Your request is accepted by our HR team. Now ur our employee.\n Thank you for ur corperation \r\n Thank you. \r\n By Exertion.",#body
+        settings.EMAIL_HOST_USER,
+        [email],
+    )
+    db.collection("tbl_Employereg").add({"Employe_id":empid,"Employe_name":user["user_name"],"Emplpoye_contact":user["user_contact"],"Employe_email":user["user_email"],"Employe_address":user["user_address"],"Employe_gender":user["user_gender"],"Employe_photo":user["user_photo"],"place_id":user["place_id"]})
+    db.collection("tbl_userreg").document(request["user_id"]).delete()
+    db.collection("tbl_request").document(id).delete()
+    return redirect("webadmin:viewreq")
+    
+
+def reject(request,id):
+    req=db.collection("tbl_request").document(id).update({"request_status":2})
+     
+    return redirect("webuser:viewreq")
+   

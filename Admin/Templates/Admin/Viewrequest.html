@@ -9,6 +9,7 @@
     <table>
         <tr>
             <td>#</td>
+            <td>User photo</td>
             <td>User Name</td>
             <td>Company Name</td>
             <td>Resume</td>
@@ -16,12 +17,13 @@
         </tr>
         {% for i in view%}
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-
+            <td>{{forloop.counter}}</td>
+            <td><img src="{{i.user.user_photo}}" width="100" height="100" alt=""></td>
+            <td>{{i.user.user_name}}</td>
+            <td>{{i.vacancy.CompanyName}}</td>
+            <td><img src="{{i.view.user_resume}}" width="100" height="100" alt=""></td>
+            <td> <a href="{% url 'webadmin:accept' i.id %}">accept</a></td>
+            <td> <a href="{% url 'webadmin:reject' i.id %}">reject</a></td>
         </tr>
         {% endfor %}
     </table>
