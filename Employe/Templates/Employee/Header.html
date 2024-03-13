@@ -68,10 +68,11 @@
                     </button>
                     <div class="collapse navbar-collapse bg-transparent" id="navbarCollapse">
                         <div class="navbar-nav ms-auto mx-xl-auto p-0">
-                            <a href="index.html" class="nav-item nav-link active text-secondary">Home</a>
+                            <a href="{% url 'webemploye:homepage' %}" class="nav-item nav-link active text-secondary">Home</a>
                             <a href="{% url 'webemploye:work' %}" class="nav-item nav-link">Work</a>
                             <a href="{% url 'webemploye:Myprofile' %}" class="nav-item nav-link">Myprofile</a>
                             <a href="{% url 'webemploye:attendence' %}" class="nav-item nav-link">Attendence</a>
+                            <a href="{% url 'webemploye:complaint' %}" class="nav-item nav-link">Complaint</a>
                                 <!-- <div class="dropdown-menu rounded">
                                     <a href="blog.html" class="dropdown-item">Our Blog</a>
                                     <a href="team.html" class="dropdown-item">Our Team</a>

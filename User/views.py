@@ -5,6 +5,7 @@ import pyrebase
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
+from datetime import date,datetime
 
 
 
@@ -78,3 +79,30 @@ def sendreq(request,id):
     return redirect("webuser:viewvacancy")
   else:  
     return render(request,"User/SendRequest.html")   
+  
+
+
+def logout(request):
+  del request.session["uid"]
+  return redirect("webguest:Login")
+
+
+
+def complaint(request):
+  com=db.collection("tbl_complaint").where("user_id","==",request.session["uid"]).stream()
+  com_data=[]
+  for i in com:
+      data=i.to_dict()
+      com_data.append({"com":data,"id":i.id})
+  if request.method=="POST":
+      datedata = date.today()
+      data={"user_id":request.session["uid"],"Employee_id":"","complaint_content":request.POST.get("content"),"complaint_status":0,"complaint_date":str(datedata)}
+      db.collection("tbl_complaint").add(data)
+      return redirect("webuser:complaint")
+  else:
+    return render(request,"User/Complaint.html",{"com":com_data})
+
+
+def delcomplaint(request,id):
+  db.collection("tbl_complaint").document(id).delete()     
+  return redirect("webuser:complaint")  

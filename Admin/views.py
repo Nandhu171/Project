@@ -27,23 +27,34 @@ st = firebase.storage()
 
 
 # Create your views here.
-def District(request):
-    dis=db.collection("tbl_district").stream()
-    dis_data=[]
-    for i in dis:
-        data=i.to_dict()
-        dis_data.append({"dis":data,"id":i.id})
-    if request.method=="POST":
-        data={"district_name":request.POST.get("district")}
-        db.collection("tbl_district").add(data)
-    return render(request,"Admin/District.html",{"district":dis_data})
-
-
+def district(request):
+    if "aid" in request.session:
+        dis=db.collection("tbl_district").stream()
+        dis_data=[]
+        for i in dis:
+            data=i.to_dict()
+            dis_data.append({"dis":data,"id":i.id})
+        if request.method=="POST":
+            data={"district_name":request.POST.get("District")}
+            db.collection("tbl_district").add(data)
+            return redirect("webadmin:district")
+        else:
+            return render(request,"Admin/District.html",{"district":dis_data})
+    else:
+        return render(request,"Guest/Login.html")   
 def deldistrict(request,id):
     db.collection("tbl_district").document(id).delete()
-    return redirect("webadmin:District")
+    return redirect("webadmin:district")   
 
-
+def editdistrict(request,id):
+    dis=db.collection("tbl_district").document(id).get().to_dict()
+    if request.method=="POST":
+        data={"district_name":request.POST.get("District")}
+        db.collection("tbl_district").document(id).update(data)
+        return redirect("webadmin:district")
+    else:
+        return render(request,"Admin/District.html",{"dis_data":dis}) 
+   
 def Place(request):
     dis=db.collection("tbl_district").stream()
     dis_data=[]
@@ -56,13 +67,20 @@ def Place(request):
         place_dict=place.to_dict()
         district=db.collection("tbl_district").document(place_dict["district_id"]).get()
         district_dict=district.to_dict()
-        result.append({'districtdata':district_dict,'place_data':place_dict,'placeid':place.id})
+        result.append({'district_data':district_dict,'place_data':place_dict,'placeid':place.id})
     if request.method=="POST":
-        data={"place_name":request.POST.get("place"),"district_id":request.POST.get("district")}
+        data={"place_name":request.POST.get("Place"),"district_id":request.POST.get("district")}
         db.collection("tbl_place").add(data)
         return redirect("webadmin:Place")
     else:
-        return render(request,"Admin/Place.html")    
+        return render(request,"Admin/Place.html",{"district":dis_data,"place":result})
+    
+def delPlace(request,id):
+    db.collection("tbl_place").document(id).delete()
+    return redirect("webadmin:Place") 
+
+def editPlace(request,id):
+    db.collection()  
 
 
 def vacancy(request):
@@ -77,17 +95,27 @@ def vacancy(request):
     return render(request,"Admin/vacancy.html",{"vacancy":w_data})
     
 def Employe(request):
+    w=db.collection("tbl_Employereg").stream()
+    w_data=[]
+    for i in w:
+        data=i.to_dict()
+        w_data.append({"w":data,"id":i.id})
     if request.method =="POST":
-      email = request.POST.get("email")
-      password = request.POST.get("Password")
-      try:
-        Employe = firebase_admin.auth.create_user(email=email,password=password)
-      except (firebase_admin._auth_utils.EmailAlreadyExistsError,ValueError) as error:
-        return render(request,"Admin/Employe.html",{"msg":error})
-      db.collection("tbl_Employereg").add({"Employe_id":Employe.uid,"Employe_name":request.POST.get("name"),"Employe_contact":request.POST.get("contact"),"user_email":request.POST.get("email"),"user_address":request.POST.get("Address"),"user_gender":request.POST.get("Gender")})
-      return render(request,"Admin/Employe.html")
+        email = request.POST.get("email")
+        password = request.POST.get("Password")
+        try:
+            Employe = firebase_admin.auth.create_user(email=email,password=password)
+        except (firebase_admin._auth_utils.EmailAlreadyExistsError,ValueError) as error:
+            return render(request,"Admin/Employe.html",{"msg":error})
+        image=request.FILES.get("photo")
+        if image :
+            path="EmployeePhoto/" + image.name
+            st.child(path).put(image)
+            e_url=st.child(path).get_url(None)
+        db.collection("tbl_Employereg").add({"Employe_id":Employe.uid,"Employe_name":request.POST.get("name"),"Employe_contact":request.POST.get("contact"),"Employee_email":request.POST.get("email"),"Employee_address":request.POST.get("Address"),"Employee_gender":request.POST.get("Gender"),"Employee_photo":e_url})
+        return render(request,"Admin/Employe.html")
     else:
-      return render(request,"Admin/Employe.html")       
+        return render(request,"Admin/Employe.html",{"wdata":w_data})       
 
 
 def viewreq(request):
@@ -125,3 +153,40 @@ def reject(request,id):
    
 def homepage(request):
     return render(request,"Admin/Homepage.html")   
+
+
+
+def viewcomplaint(request):
+    user_data=[]
+    employee_data=[]
+    ecom = db.collection("tbl_complaint").where("employee_id", "!=","").where("complaint_status", "==", 0).stream()
+    for i in ecom:
+        edata = i.to_dict()
+        employee = db.collection("tbl_Employereg").document(edata["employee_id"]).get().to_dict()
+        employee_data.append({"complaint":i.to_dict(),"id":i.id,"employee":employee})
+    ucom=db.collection("tbl_complaint").where("user_id","!=",0).where("complaint_status","==",0).stream()
+    for i in ucom:
+        udata = i.to_dict()
+        user = db.collection("tbl_userreg").document(udata["user_id"]).get().to_dict()
+        user_data.append({"complaint":i.to_dict(),"id":i.id,"user":user}) 
+    return render(request,"Admin/ViewComplaints.html",{"user":user_data,"employee":employee_data})    
+
+def reply(request,id):
+    if request.method == "POST":
+            db.collection("tbl_complaint").document(id).update({"complaint_reply":request.POST.get("reply"),"complaint_status":"1"})
+            return render(request,"Admin/Reply.html",{"msg":"Reply Sended..."})
+    return render(request,"Admin/Reply.html")    
+
+def logout(request):
+  del request.session["uid"]
+  return redirect("webguest:login")      
+
+
+def viewattendance(request,id):
+    attendence=db.collection("tbl_attendence").where("employee","==",request.session["eid"]).stream()
+    attendence_data=[]
+    for i in attendence:
+        data=i.to_dict()
+        attendence_data.append({"attendance":data,"id":i.id})
+        print(attendence_data)
+    return render(request,"Admin/ViewAttendance.html",{"attendance":attendence_data})    

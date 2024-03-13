@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <table align="center">
             <tr>
@@ -33,6 +33,10 @@
                 <input type="radio" name="Gender" id="" value="female">Female</td>
             </tr>
             <tr>
+                <td>Photo</td>
+                <td><input type="file" name="photo" id=""></td>
+            </tr>
+            <tr>
                 <td>Password</td>
                 <td><input type="password" name="Password" id=""></td>
             </tr>
@@ -40,6 +44,32 @@
                 <td colspan="2" align="center"> <input type="submit" value="Add"></td>
                 <td></td>
             </tr>
+        </table>
+        {% if msg %}
+        <script>
+            alert("{{msg}}")
+            window.location = "{% url 'webadmin:Employe' %}"
+        </script>
+        {% endif %}
+        <table cellpadding="10">
+            <tr>
+                <td>#</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact</td>
+                <td>Address</td>
+                <td>Attendance</td>
+            </tr>
+            {% for i in wdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.w.Employe_name}}</td>
+                <td>{{i.w.Employe_email}}</td>
+                <td>{{i.w.Emplpoye_contact}}</td>
+                <td>{{i.w.Employe_address}}</td>    
+                <td><a href="{% url 'webadmin:viewattendance' i.id %}">View Attendance</a></td>
+            </tr>
+            {% endfor %}
         </table>
     </form>
 </body>
