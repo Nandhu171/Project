@@ -78,3 +78,8 @@ def sendreq(request,id):
     return redirect("webuser:viewvacancy")
   else:  
     return render(request,"User/SendRequest.html")   
+  
+  
+def logout(request):
+  del request.session["uid"]
+  return redirect("webguest:login")

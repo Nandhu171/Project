@@ -41,6 +41,30 @@
                 <td></td>
             </tr>
         </table>
+        {% if msg %}
+        <script>
+            alert("{{msg}}")
+            window.location = "{% url 'webadmin:Employe' %}"
+        </script>
+        {% endif %}
+        <table cellpadding="10">
+            <tr>
+                <td>#</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact</td>
+                <td>Address</td>
+            </tr>
+            {% for i in wdata %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.w.Employe_name}}</td>
+                <td>{{i.w.user_email}}</td>
+                <td>{{i.w.Employe_contact}}</td>
+                <td>{{i.w.user_address}}</td>    
+            </tr>
+            {% endfor %}
+        </table>
     </form>
 </body>
 </html>

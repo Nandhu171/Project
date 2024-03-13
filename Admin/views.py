@@ -27,23 +27,32 @@ st = firebase.storage()
 
 
 # Create your views here.
-def District(request):
+def district(request):
     dis=db.collection("tbl_district").stream()
     dis_data=[]
     for i in dis:
         data=i.to_dict()
         dis_data.append({"dis":data,"id":i.id})
     if request.method=="POST":
-        data={"district_name":request.POST.get("district")}
+        data={"district_name":request.POST.get("District")}
         db.collection("tbl_district").add(data)
-    return render(request,"Admin/District.html",{"district":dis_data})
-
-
+        return redirect("webadmin:district")
+    else:
+        return render(request,"Admin/District.html",{"district":dis_data})
+    
 def deldistrict(request,id):
     db.collection("tbl_district").document(id).delete()
-    return redirect("webadmin:District")
+    return redirect("webadmin:district")   
 
-
+def editdistrict(request,id):
+    dis=db.collection("tbl_district").document(id).get().to_dict()
+    if request.method=="POST":
+        data={"district_name":request.POST.get("District")}
+        db.collection("tbl_district").document(id).update(data)
+        return redirect("webadmin:district")
+    else:
+        return render(request,"Admin/District.html",{"dis_data":dis}) 
+   
 def Place(request):
     dis=db.collection("tbl_district").stream()
     dis_data=[]
@@ -56,13 +65,20 @@ def Place(request):
         place_dict=place.to_dict()
         district=db.collection("tbl_district").document(place_dict["district_id"]).get()
         district_dict=district.to_dict()
-        result.append({'districtdata':district_dict,'place_data':place_dict,'placeid':place.id})
+        result.append({'district_data':district_dict,'place_data':place_dict,'placeid':place.id})
     if request.method=="POST":
-        data={"place_name":request.POST.get("place"),"district_id":request.POST.get("district")}
+        data={"place_name":request.POST.get("Place"),"district_id":request.POST.get("district")}
         db.collection("tbl_place").add(data)
         return redirect("webadmin:Place")
     else:
-        return render(request,"Admin/Place.html")    
+        return render(request,"Admin/Place.html",{"district":dis_data,"place":result})
+    
+def delPlace(request,id):
+    db.collection("tbl_place").document(id).delete()
+    return redirect("webadmin:Place") 
+
+def editPlace(request,id):
+    db.collection()  
 
 
 def vacancy(request):
@@ -77,17 +93,22 @@ def vacancy(request):
     return render(request,"Admin/vacancy.html",{"vacancy":w_data})
     
 def Employe(request):
+    w=db.collection("tbl_Employereg").stream()
+    w_data=[]
+    for i in w:
+        data=i.to_dict()
+        w_data.append({"w":data,"id":i.id})
     if request.method =="POST":
-      email = request.POST.get("email")
-      password = request.POST.get("Password")
-      try:
-        Employe = firebase_admin.auth.create_user(email=email,password=password)
-      except (firebase_admin._auth_utils.EmailAlreadyExistsError,ValueError) as error:
-        return render(request,"Admin/Employe.html",{"msg":error})
-      db.collection("tbl_Employereg").add({"Employe_id":Employe.uid,"Employe_name":request.POST.get("name"),"Employe_contact":request.POST.get("contact"),"user_email":request.POST.get("email"),"user_address":request.POST.get("Address"),"user_gender":request.POST.get("Gender")})
-      return render(request,"Admin/Employe.html")
+        email = request.POST.get("email")
+        password = request.POST.get("Password")
+        try:
+            Employe = firebase_admin.auth.create_user(email=email,password=password)
+        except (firebase_admin._auth_utils.EmailAlreadyExistsError,ValueError) as error:
+            return render(request,"Admin/Employe.html",{"msg":error})
+        db.collection("tbl_Employereg").add({"Employe_id":Employe.uid,"Employe_name":request.POST.get("name"),"Employe_contact":request.POST.get("contact"),"user_email":request.POST.get("email"),"user_address":request.POST.get("Address"),"user_gender":request.POST.get("Gender")})
+        return render(request,"Admin/Employe.html")
     else:
-      return render(request,"Admin/Employe.html")       
+        return render(request,"Admin/Employe.html",{"wdata":w_data})       
 
 
 def viewreq(request):
