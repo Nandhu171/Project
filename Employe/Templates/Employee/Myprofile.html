@@ -1,3 +1,5 @@
+{% extends 'Employee/Header.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,19 +14,19 @@
         <table>
             <tr>
                 <td>Name</td>
-                <td>{employe.employe_name}}</td>
+                <td>{{Employee.Employe_name}}</td>
             </tr>
             <tr>
                 <td>Contact</td>
-                <td>{{employe.employe_contact}}</td>
+                <td>{{Employee.Emplpoye_contact}}</td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td>{{employe.employe_email}}</td>
+                <td>{{Employee.Employe_email}}</td>
             </tr>
             <tr>
                 <td>Address</td>
-                <td>{{employe.employe_address}}</td>
+                <td>{{Employee.Employe_address}}</td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><a href="{% url 'webemploye:Editprofile' %}">Edit Profile</a>
@@ -34,3 +36,4 @@
     </form>
 </body>
 </html>
+{% endblock content %}

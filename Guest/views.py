@@ -81,3 +81,6 @@ def ajaxplace(request):
         place_data.append({"place":p.to_dict(),"id":p.id})
     return render(request,"Guest/AjaxPlace.html",{"place":place_data})
   
+
+def index(request):
+  return render(request,"Guest/index.html")

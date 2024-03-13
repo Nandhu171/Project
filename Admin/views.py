@@ -123,3 +123,5 @@ def reject(request,id):
      
     return redirect("webuser:viewreq")
    
+def homepage(request):
+    return render(request,"Admin/Homepage.html")   

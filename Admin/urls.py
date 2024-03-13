@@ -11,4 +11,5 @@ urlpatterns = [
     path('viewreq/',views.viewreq,name="viewreq"),
     path('accept/<str:id>',views.accept,name="accept"),
     path('reject/<str:id>',views.reject,name="reject"),
+    path('homepage/',views.homepage,name="homepage"),
 ]

@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 import firebase_admin 
 from firebase_admin import firestore,credentials,storage,auth
 import pyrebase
-
+from datetime import date,datetime
 
 
 db=firestore.client()
@@ -28,16 +28,17 @@ def homepage(request):
 
 
 def Myprofile (request):
-    Employee = db.collection("tbl_Employereg").document(request.session["uid"]).get().to_dict()
+    Employee = db.collection("tbl_Employereg").document(request.session["eid"]).get().to_dict()
+    
     return render(request,"Employee/Myprofile.html",{"Employee":Employee})
-
+   
   
 def Editprofile(request):
   Employee = db.collection("tbl_Employereg").document(request.session["uid"]).get().to_dict()
   if request.method=="POST":
     data={"Employee_name":request.POST.get("name"),"Employee_contact":request.POST.get("contact"),"Employee_address":request.POST.get("address")}
-    db.collection("tbl_Employereg").document(request.session["uid"]).update(data)
-    return redirect("webEmployee:Myprofile")
+    db.collection("tbl_Employereg").document(request.session["eid"]).update(data)
+    return redirect("webemploye:Myprofile")
   else:
     return render(request,"Employee/EditProfile.html",{"Employee":Employee})  
 
@@ -51,4 +52,24 @@ def changepassword(request):
     settings.EMAIL_HOST_USER,
     [email],
   )
-  return render(request,"Employee/Homepage.html",{"msg":email})    
+  return render(request,"Employee/Homepage.html",{"msg":email})  
+
+def work(request):
+    if request.method=="POST":
+        data={"Description_name":request.POST.get("description"),"work_name":request.POST.get("work")}
+        db.collection("tbl_workdetails").add(data)
+    return render(request,"Employee/Work.html")
+
+def attendence(request):
+  datedata=date.today()  
+  time = datetime.now()
+  data = db.collection("tbl_attendence").where("employee","==",request.session["uid"]).where("date","==",str(datedata)).stream()
+  count = 0
+  for i in data:
+    count = count + 1
+  if count > 0:
+    return render(request,"Employee/Homepage.html",{"msg":"Attendence is already added"})
+  else:
+    data={"date":str(datedata),"employee":request.session["uid"],"time":str(time)} 
+    db.collection("tbl_attendence").add(data)
+    return render(request,"Employee/Homepage.html",{"msg":"Attendence added"})
