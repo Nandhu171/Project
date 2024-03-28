@@ -80,7 +80,6 @@ def sendreq(request,id):
   else:  
     return render(request,"User/SendRequest.html")   
   
-<<<<<<< HEAD
 
 
 def logout(request):
@@ -107,9 +106,3 @@ def complaint(request):
 def delcomplaint(request,id):
   db.collection("tbl_complaint").document(id).delete()     
   return redirect("webuser:complaint")  
-=======
-  
-def logout(request):
-  del request.session["uid"]
-  return redirect("webguest:login")
->>>>>>> 6747d5d6cace1e7dff62efc55c1e8b7e82695daa

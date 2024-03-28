@@ -28,7 +28,7 @@ st = firebase.storage()
 
 # Create your views here.
 def district(request):
-<<<<<<< HEAD
+
     if "aid" in request.session:
         dis=db.collection("tbl_district").stream()
         dis_data=[]
@@ -43,7 +43,6 @@ def district(request):
             return render(request,"Admin/District.html",{"district":dis_data})
     else:
         return render(request,"Guest/Login.html")   
-=======
     dis=db.collection("tbl_district").stream()
     dis_data=[]
     for i in dis:
@@ -56,7 +55,7 @@ def district(request):
     else:
         return render(request,"Admin/District.html",{"district":dis_data})
     
->>>>>>> 6747d5d6cace1e7dff62efc55c1e8b7e82695daa
+
 def deldistrict(request,id):
     db.collection("tbl_district").document(id).delete()
     return redirect("webadmin:district")   
@@ -122,16 +121,12 @@ def Employe(request):
             Employe = firebase_admin.auth.create_user(email=email,password=password)
         except (firebase_admin._auth_utils.EmailAlreadyExistsError,ValueError) as error:
             return render(request,"Admin/Employe.html",{"msg":error})
-<<<<<<< HEAD
         image=request.FILES.get("photo")
         if image :
             path="EmployeePhoto/" + image.name
             st.child(path).put(image)
             e_url=st.child(path).get_url(None)
         db.collection("tbl_Employereg").add({"Employe_id":Employe.uid,"Employe_name":request.POST.get("name"),"Employe_contact":request.POST.get("contact"),"Employee_email":request.POST.get("email"),"Employee_address":request.POST.get("Address"),"Employee_gender":request.POST.get("Gender"),"Employee_photo":e_url})
-=======
-        db.collection("tbl_Employereg").add({"Employe_id":Employe.uid,"Employe_name":request.POST.get("name"),"Employe_contact":request.POST.get("contact"),"user_email":request.POST.get("email"),"user_address":request.POST.get("Address"),"user_gender":request.POST.get("Gender")})
->>>>>>> 6747d5d6cace1e7dff62efc55c1e8b7e82695daa
         return render(request,"Admin/Employe.html")
     else:
         return render(request,"Admin/Employe.html",{"wdata":w_data})       
