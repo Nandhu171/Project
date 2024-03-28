@@ -20,6 +20,8 @@ urlpatterns = [
     path('Reply/<str:id>',views.reply,name="reply"),
     path('logout/',views.logout,name="logout"),
     path('viewattendance/<str:id>',views.viewattendance,name="viewattendance"),
+    path('viewemployee/',views.viewemployee,name="viewemployee"),
+    path('Admin/',views.admin,name="admin"),
 
     
 ]

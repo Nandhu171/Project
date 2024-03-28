@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post">
+    <table cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Contact</td>
+            <td>Address</td>
+            <td>Attendance</td>
+        </tr>
+        {% for i in wdata %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.w.Employe_name}}</td>
+            <td>{{i.w.Employee_email}}</td>
+            <td>{{i.w.Employe_contact}}</td>
+            <td>{{i.w.Employee_address}}</td>    
+            <td><a href="{% url 'webadmin:viewattendance' i.id %}">View Attendance</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>    
+</body>
+</html>

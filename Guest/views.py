@@ -49,6 +49,7 @@ def Userregistraction(request):
 def Login(request):
   Employeid=""
   userid=""
+  admin=""
   if request.method == "POST":
     email = request.POST.get("email")
     password = request.POST.get("password")
@@ -56,19 +57,25 @@ def Login(request):
       data = authe.sign_in_with_email_and_password(email,password)
     except:
       return render(request,"Guest/Login.html",{"msg":"Error in Email Or Password"})
-    print(data["localId"])
+    # print(data["localId"])
     user=db.collection("tbl_userreg").where("user_id","==",data["localId"]).stream()    
     for u in user:
       userid=u.id 
     Employee=db.collection("tbl_Employereg").where("Employe_id","==",data["localId"]).stream()  
     for e in Employee:
       Employeid=e.id  
+    admin=db.collection("tbl_admin").where("admin_id","==",data["localId"]).stream()  
+    for a in admin:
+      adminid=a.id
     if userid:
       request.session["uid"]=userid
       return redirect("webuser:homepage")
     elif Employeid:
       request.session["eid"]=Employeid
       return redirect("webemploye:homepage")
+    elif adminid:
+      request.session["aid"]=adminid
+      return redirect("webadmin:homepage")  
     else:
       return render(request,"Guest/Login.html",{"msg":"error"})    
   else:

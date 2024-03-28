@@ -70,7 +70,7 @@ def attendence(request):
   if count > 0:
     return render(request,"Employee/Homepage.html",{"msg":"Attendence is already added"})
   else:
-    data={"date":str(datedata),"employee":request.session["eid"],"time":str(time)} 
+    data={"date":str(datedata),"employee":request.session["eid"],"time":datetime.now()} 
     db.collection("tbl_attendence").add(data)
     return render(request,"Employee/Homepage.html",{"msg":"Attendence added"})
 

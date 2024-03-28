@@ -15,11 +15,11 @@
             <td>Date</td>
             <td>Time</td>
         </tr>
-        {% for i in attendence %}
+        {% for i in attendance %}
         <tr>
             <td>{{forloop.counter}}</td>
-            <td>{{i.attendence.date}}</td>
-            <td>{{i.attendence.time}}</td>
+            <td>{{i.attendance.date}}</td>
+            <td>{{i.attendance.time|time}}</td>
         </tr>
         {% endfor %}
     </table>

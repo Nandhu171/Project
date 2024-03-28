@@ -22,5 +22,5 @@ urlpatterns = [
     path('wadmin/',include('Admin.urls')),
     path('User/',include('User.urls')),
     path('Employe/',include('Employe.urls')),
-    path('Guest/',include('Guest.urls')),
+    path('',include('Guest.urls')),
 ]

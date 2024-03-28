@@ -24,9 +24,25 @@
                 <td><input type="text" name="email" id=""></td>
             </tr>
             <tr>
+                <td>District</td>
+                <td><select name="sel_district" id="sel_district">
+                    <option value="">...Select...</option>
+                    {% for i in district %}
+                    <option value="{{i.id}}">{{i.dis.district_name}}</option>
+                {% endfor %}
+            </select></td>
+            </tr>
+            <tr>
+                <td>Place</td>
+                <td><select name="sel_place" id="sel_place">
+                    <option value="">..Select..</option>
+            </select></td>
+            </tr>
+            <tr>
                 <td>Address</td>
                 <td><textarea name="Address" id="" cols="30" rows="10"></textarea></td>
             </tr>
+
             <tr>
                 <td>Gender</td>
                 <td><input type="radio" name="Gender" id="" value="male">Male
@@ -52,36 +68,42 @@
             window.location = "{% url 'webadmin:Employe' %}"
         </script>
         {% endif %}
-        <table cellpadding="10">
+        <!-- <table cellpadding="10">
             <tr>
                 <td>#</td>
                 <td>Name</td>
                 <td>Email</td>
                 <td>Contact</td>
                 <td>Address</td>
-<<<<<<< HEAD
                 <td>Attendance</td>
-=======
->>>>>>> 6747d5d6cace1e7dff62efc55c1e8b7e82695daa
             </tr>
             {% for i in wdata %}
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{i.w.Employe_name}}</td>
-<<<<<<< HEAD
-                <td>{{i.w.Employe_email}}</td>
-                <td>{{i.w.Emplpoye_contact}}</td>
-                <td>{{i.w.Employe_address}}</td>    
-                <td><a href="{% url 'webadmin:viewattendance' i.id %}">View Attendance</a></td>
-=======
-                <td>{{i.w.user_email}}</td>
+                <td>{{i.w.Employee_email}}</td>
                 <td>{{i.w.Employe_contact}}</td>
-                <td>{{i.w.user_address}}</td>    
->>>>>>> 6747d5d6cace1e7dff62efc55c1e8b7e82695daa
+                <td>{{i.w.Employee_address}}</td>    
+                <td><a href="{% url 'webadmin:viewattendance' i.id %}">View Attendance</a></td>
             </tr>
             {% endfor %}
-        </table>
+        </table> -->
     </form>
 </body>
 </html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'webguest:ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#sel_place").html(data);
+            },
+        });
+    });
+</script>
+
 {% endblock content %}
