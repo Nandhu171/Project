@@ -46,6 +46,7 @@
             </tr>
         </table>
         {% if msg %}
+        
         <script>
             alert("{{msg}}")
             window.location = "{% url 'webadmin:Employe' %}"
@@ -58,16 +59,25 @@
                 <td>Email</td>
                 <td>Contact</td>
                 <td>Address</td>
+<<<<<<< HEAD
                 <td>Attendance</td>
+=======
+>>>>>>> 6747d5d6cace1e7dff62efc55c1e8b7e82695daa
             </tr>
             {% for i in wdata %}
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{i.w.Employe_name}}</td>
+<<<<<<< HEAD
                 <td>{{i.w.Employe_email}}</td>
                 <td>{{i.w.Emplpoye_contact}}</td>
                 <td>{{i.w.Employe_address}}</td>    
                 <td><a href="{% url 'webadmin:viewattendance' i.id %}">View Attendance</a></td>
+=======
+                <td>{{i.w.user_email}}</td>
+                <td>{{i.w.Employe_contact}}</td>
+                <td>{{i.w.user_address}}</td>    
+>>>>>>> 6747d5d6cace1e7dff62efc55c1e8b7e82695daa
             </tr>
             {% endfor %}
         </table>
