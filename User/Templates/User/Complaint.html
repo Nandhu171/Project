@@ -9,6 +9,37 @@
     <title>Document</title>
 </head>
 <body>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Change as needed */
+            padding: 20px; /* Provides some space around the table */
+        }
+        table {
+            width: 75% ;/* Full width */
+            border-collapse: collapse; /* Collapses borders */
+        }
+        table, th, td {
+            border: 1px solid #ddd; /* Light grey border */
+        }
+        th, td {
+            text-align: left; /* Align text to the left */
+            padding: 8px; /* Add space around content */
+        }
+        th {
+            background-color: #f2f2f2; /* Light grey background */
+            color: #333; /* Dark text for contrast */
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9; /* Zebra stripes */
+        }
+        a {
+            color: #007bff; /* Bootstrap blue */
+            text-decoration: none; /* No underline */
+        }
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
     <form action="" method="post">
         {% csrf_token %}
         

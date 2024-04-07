@@ -6,29 +6,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 70%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        td {
+            background-color: #fff;
+        }
+        /* img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 50%;
+        } */
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .action-links {
+            display: flex;
+        }
+    </style>
 </head>
 <body>
     <table>
         <tr>
-            <td>#</td>
-            <td>User photo</td>
-            <td>User Name</td>
-            <td>Company Name</td>
-            <td>Resume</td>
-            <td>Action</td>
+            <th>#</th>
+            <th>User photo</th>
+            <th>User Name</th>
+            <th>Company Name</th>
+            <th>Resume</th>
+            <th>Action</th>
         </tr>
-        {% for i in view%}
+        {% for i in view %}
         <tr>
             <td>{{forloop.counter}}</td>
-            <td><img src="{{i.user.user_photo}}" width="100" height="100" alt=""></td>
+            <td><img src="{{i.user.user_photo}}" width="100" alt=""></td>
             <td>{{i.user.user_name}}</td>
-            <td>{{i.vacancy.CompanyName}}</td>
-            <td><img src="{{i.view.user_resume}}" width="100" height="100" alt=""></td>
-            <td> <a href="{% url 'webadmin:accept' i.id %}">accept</a></td>
-            <td> <a href="{% url 'webadmin:reject' i.id %}">reject</a></td>
+            <td>{{i.view.CompanyName}}</td>
+            <td><img src="{{i.view.user_resume}}"  width="100" alt=""></td>
+            <td class="action-links">
+                <a href="{% url 'webadmin:accept' i.id %}">Accept</a>
+                <br>
+                <a href="{% url 'webadmin:reject' i.id %}">Reject</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
 </body>
 </html>
+
 {% endblock content %}

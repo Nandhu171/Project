@@ -102,18 +102,21 @@ def editPlace(request,id):
 
 def vacancy(request):
     if "aid" in request.session:
-        w=db.collection("tbl_vacancy").stream()
-        w_data=[]
-        for i in w:
+        vacancy=db.collection("tbl_vacancy").stream()
+        vacancy_data=[]
+        for i in vacancy:
             data=i.to_dict()
-            w_data.append({"w":data,"id":i.id})
+            vacancy_data.append({"vacancy":data,"id":i.id})
         if request.method=="POST":
-            data={"CompanyName":request.POST.get("CompanyName"),"vacancy_postion":request.POST.get("postion"),"vacancy_details":request.POST.get("Details")}
+            data={"CompanyName":request.POST.get("CompanyName"),"vacancy_postion":request.POST.get("position"),"vacancy_details":request.POST.get("Details")}
             db.collection("tbl_vacancy").add(data)
-        return render(request,"Admin/vacancy.html",{"vacancy":w_data})
+        return render(request,"Admin/vacancy.html",{"vacancy":vacancy_data})
     else:    
         return render(request,"Guest/login.html")   
 
+def delvacancy(request,id):
+    db.collection("tbl_vacancy").document(id).delete()
+    return redirect("webadmin:vacancy")
         
 def Employe(request):
     if "aid" in request.session:
@@ -195,12 +198,12 @@ def viewcomplaint(request):
     if "aid" in request.session:
         user_data=[]
         employee_data=[]
-        ecom = db.collection("tbl_complaint").where("employee_id", "!=","").where("complaint_status", "==", 0).stream()
+        ecom = db.collection("tbl_complaint").where("Employee_id", "!=","").where("complaint_status", "==", 0).stream()
         for i in ecom:
             edata = i.to_dict()
-            employee = db.collection("tbl_Employereg").document(edata["employee_id"]).get().to_dict()
+            employee = db.collection("tbl_Employereg").document(edata["Employee_id"]).get().to_dict()
             employee_data.append({"complaint":i.to_dict(),"id":i.id,"employee":employee})
-        ucom=db.collection("tbl_complaint").where("user_id","!=",0).where("complaint_status","==",0).stream()
+        ucom=db.collection("tbl_complaint").where("user_id","!=","").where("complaint_status","==",0).stream()
         for i in ucom:
             udata = i.to_dict()
             user = db.collection("tbl_userreg").document(udata["user_id"]).get().to_dict()

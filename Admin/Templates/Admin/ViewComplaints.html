@@ -42,10 +42,10 @@
             <td>Action</td>
             
         </tr>
-        {% for i in organizer %}
+        {% for i in employee %}
         <tr>
             <td>{{forloop.counter}}</td>
-            <td>{{i.organizer.org_name}}</td>
+            <td>{{i.employee.Employe_name}}</td>
             <td>{{i.complaint.complaint_content}}</td>
             <td>{{i.complaint.complaint_date}}</td>
             <td><a href="{% url 'webadmin:reply' i.id%}">Reply</a></td>

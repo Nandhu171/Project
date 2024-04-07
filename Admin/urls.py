@@ -22,6 +22,7 @@ urlpatterns = [
     path('viewattendance/<str:id>',views.viewattendance,name="viewattendance"),
     path('viewemployee/',views.viewemployee,name="viewemployee"),
     path('Admin/',views.admin,name="admin"),
+    path('delvacancy/<str:id>',views.delvacancy,name="delvacancy"),
 
     
 ]

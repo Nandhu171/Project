@@ -1,20 +1,54 @@
+
+{% extends 'Admin/header.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <form action="" method="post">
-    <table cellpadding="10">
+    <table>
         <tr>
-            <td>#</td>
-            <td>Name</td>
-            <td>Email</td>
-            <td>Contact</td>
-            <td>Address</td>
-            <td>Attendance</td>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Address</th>
+            <th>Attendance</th>
         </tr>
         {% for i in wdata %}
         <tr>
@@ -30,3 +64,5 @@
 </form>    
 </body>
 </html>
+
+{% endblock content %}

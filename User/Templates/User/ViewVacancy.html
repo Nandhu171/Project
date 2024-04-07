@@ -6,30 +6,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Change as needed */
+            padding: 20px; /* Provides some space around the table */
+        }
+        table {
+            width: 75%; /* Full width */
+            border-collapse: collapse; /* Collapses borders */
+        }
+        table, th, td {
+            border: 1px solid #ddd; /* Light grey border */
+        }
+        th, td {
+            text-align: left; /* Align text to the left */
+            padding: 8px; /* Add space around content */
+        }
+        th {
+            background-color: #f2f2f2; /* Light grey background */
+            color: #333; /* Dark text for contrast */
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9; /* Zebra stripes */
+        }
+        a {
+            color: #007bff; /* Bootstrap blue */
+            text-decoration: none; /* No underline */
+        }
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
 </head>
 <body>
     <form action="" method="post">
-        {% csrf_token  %}
-       
+        {% csrf_token %}
     </form>
     <table>
         <tr>
-            <td>#</td>
-            <td>Company Name</td>
-            <td>Position</td>
-            <td>Details</td>
-            <td>Action</td>
+            <th>#</th>
+            <th>Company Name</th>
+            <th>Position</th>
+            <th>Details</th>
+            <th>Action</th>
         </tr>
         {% for i in vacancy %}
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{i.w.CompanyName}}</td>
             <td>{{i.w.vacancy_details}}</td>
-            <td>{{i.w.vacancy_postion}}</td>
+            <td>{{i.w.vacancy_position}}</td> <!-- Note: Corrected typo in vacancy_position -->
             <td><a href="{% url 'webuser:sendreq' i.id %}">Request</a></td>
         </tr>
         {% endfor %}
     </table>
 </body>
 </html>
+
 {% endblock content %}

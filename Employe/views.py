@@ -77,14 +77,14 @@ def attendence(request):
 
 def complaint(request):
   if "eid" in request.session:
-    com=db.collection("tbl_complaint").where("employee_id","==",request.session["eid"]).stream()
+    com=db.collection("tbl_complaint").where("Employee_id","==",request.session["eid"]).stream()
     com_data=[]
     for i in com:
         data=i.to_dict()
         com_data.append({"com":data,"id":i.id})
     if request.method=="POST":
         datedata = date.today()
-        data={"user_id":"","Employee_id":request.POST.get["eid"],"complaint_content":request.POST.get("content"),"complaint_status":0,"complaint_date":str(datedata)}
+        data={"user_id":"","Employee_id":request.session["eid"],"complaint_content":request.POST.get("content"),"complaint_status":0,"complaint_date":str(datedata)}
         db.collection("tbl_complaint").add(data)
         return redirect("webemploye:complaint")
     else:
